@@ -1,0 +1,16 @@
+[Unit]
+Description=ROS2 Topic Frequency Monitor
+After=drs_rosbag_record.service
+Wants=drs_rosbag_record.service
+
+[Service]
+Type=simple
+User=nvidia
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/nvidia/.Xauthority"
+ExecStart=/bin/bash -c "source /opt/ros/humble/setup.bash && python3 /opt/drs/topic_notifier.py"
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target
