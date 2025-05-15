@@ -88,7 +88,7 @@ class TopicNotifierGUI(QMainWindow):
         
     def setupUI(self):
         self.setWindowTitle("ROS2 Topic Frequency Monitor")
-        self.resize(600, 400)
+        self.resize(800, 800)
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         
         # 画面の右上端にウィンドウを配置
