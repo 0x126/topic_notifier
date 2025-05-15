@@ -9,13 +9,13 @@ from typing import List, Dict, Tuple, Pattern, Any
 import os
 import sys
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import (
+from PySide2 import QtCore
+from PySide2.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QScrollArea, QFrame, QSizePolicy, QGridLayout
 )
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QPalette
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QColor, QPalette
 
 
 class TopicStatusWidget(QFrame):
@@ -92,7 +92,7 @@ class TopicNotifierGUI(QMainWindow):
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         
         # 画面の右上端にウィンドウを配置
-        screen_geometry = QApplication.desktop().availableGeometry()
+        screen_geometry = QApplication.screens()[0].availableGeometry()
         window_geometry = self.frameGeometry()
         window_geometry.moveTopRight(screen_geometry.topRight())
         self.move(window_geometry.topLeft())
