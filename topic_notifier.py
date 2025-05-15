@@ -176,7 +176,7 @@ class TopicNotifier(Node):
         self.gui = gui
         
         # Declare parameters
-        self.declare_parameter('yaml_config_files', ['record_topics_ecu0.yaml', 'record_topics_ecu1.yaml'])
+        self.declare_parameter('yaml_config_files', ['/opt/drs/record_topics_ecu0.yaml', '/opt/drs/record_topics_ecu1.yaml'])
         self.declare_parameter('target_node_name', 'rosbag_checker_live')
         
         # Get parameters
