@@ -286,8 +286,8 @@ class TopicNotifier(Node):
                             if name and hz_range_list and len(hz_range_list) == 2:
                                 try:
                                     config = {'min': float(hz_range_list[0]), 'max': float(hz_range_list[1])}
-                                    # Simple check for regex special characters
-                                    if any(char in name for char in ['.*', '.+', '?', '^', '$', '[', ']', '(', ')', '{', '}']):
+                                    # Check if the name contains regex patterns
+                                    if any(char in name for char in ['*', '+', '?', '^', '$', '[', ']', '(', ')', '{', '}', '|', '\\']):
                                         regex_pattern = re.compile(name)
                                         regex_configs.append((regex_pattern, config))
                                     else:
@@ -324,7 +324,7 @@ class TopicNotifier(Node):
                 config_source_info = f"Exact match: {topic_name}"
             else:
                 for pattern, config in regex_configs_list:
-                    if pattern.fullmatch(topic_name):
+                    if pattern.match(topic_name):  # Use match instead of fullmatch to match from the beginning
                         found_config = config
                         config_source_info = f"Regex match: {pattern.pattern}"
                         break
