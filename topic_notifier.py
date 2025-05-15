@@ -239,20 +239,43 @@ class TopicNotifier(Node):
         """
         ansi_escape_pattern = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
         cleaned_str = ansi_escape_pattern.sub('', msg_str)
+        
+        # Modified pattern to handle 'nan' values
         block_pattern = re.compile(
             r"Statistics for topic (.+?)\n"
-            r"Message count = (\d+), Message frequency = ([\d.]+)"
+            r"Message count = (\d+), Message frequency = ([\d.]+|nan)"
         )
+        
+        self.get_logger().debug(f"Parsing message: {cleaned_str}")
+        
         results = []
         for match in block_pattern.finditer(cleaned_str):
             topic_name = match.group(1).strip()
             message_count = int(match.group(2))
-            message_frequency = float(match.group(3))
+            
+            # Handle 'nan' frequency
+            freq_str = match.group(3)
+            if freq_str == 'nan':
+                message_frequency = float('nan')
+            else:
+                message_frequency = float(freq_str)
+            
+            self.get_logger().debug(f"Found topic: {topic_name}, count: {message_count}, freq: {message_frequency}")
+            
             results.append({
                 'topic': topic_name,
                 'message_count': message_count,
                 'message_frequency': message_frequency
             })
+        
+        if not results:
+            self.get_logger().debug(f"No matches found in message. Regex pattern: {block_pattern.pattern}")
+            # Log a sample of the message to help with debugging
+            if len(cleaned_str) > 200:
+                self.get_logger().debug(f"Message sample: {cleaned_str[:200]}...")
+            else:
+                self.get_logger().debug(f"Message: {cleaned_str}")
+        
         return results
 
     def load_hz_range_config_from_files(self, yaml_filepaths_list: List[str]) -> Tuple[Dict[str, Dict[str, float]], List[Tuple[Pattern, Dict[str, float]]]]:
