@@ -324,7 +324,7 @@ class TopicNotifier(Node):
                 config_source_info = f"Exact match: {topic_name}"
             else:
                 for pattern, config in regex_configs_list:
-                    if pattern.match(topic_name):  # Use match instead of fullmatch to match from the beginning
+                    if pattern.fullmatch(topic_name):  # Use fullmatch to match the entire string
                         found_config = config
                         config_source_info = f"Regex match: {pattern.pattern}"
                         break
